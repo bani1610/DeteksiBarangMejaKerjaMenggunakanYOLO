@@ -41,7 +41,7 @@ Pastikan perangkat memiliki:
 
 Windows (PowerShell):
 
-cd c:\Users\shola\OneDrive\Documents\portifolio
+cd [nama foldenya]
 
 ### 2. (Opsional tapi disarankan) Buat virtual environment
 
