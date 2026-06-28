@@ -15,10 +15,6 @@ print("   Dataset  : COCO128 (128 gambar dari dataset COCO)")
 print("   Model    : YOLOv8s (small)")
 print("=" * 60)
 
-# -------------------------------------------------------
-# KELAS BARANG MEJA KERJA yang relevan dari COCO dataset
-# (COCO punya 80 kelas, kita fokus ke barang meja kerja)
-# -------------------------------------------------------
 DESK_CLASSES = [
     'laptop',       # laptop/notebook
     'mouse',        # mouse komputer

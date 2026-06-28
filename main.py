@@ -14,7 +14,7 @@ print("   SMART WORKSPACE MONITOR")
 print("=" * 50)
 
 # 1. Load model - pakai hasil training jika sudah ada, jika belum pakai pretrained
-BEST_MODEL_PATH = 'runs/train/workspace_monitor/weights/best.pt'
+BEST_MODEL_PATH = 'runs/detect/runs/train/workspace_monitor/weights/best.pt'
 if os.path.exists(BEST_MODEL_PATH):
     print(f"[OK] Menggunakan model hasil training: {BEST_MODEL_PATH}")
     model = YOLO(BEST_MODEL_PATH)
