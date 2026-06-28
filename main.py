@@ -2,6 +2,7 @@ from ultralytics import YOLO
 import cv2
 from datetime import datetime
 import random
+import os
 
 # ============================================
 #   SMART WORKSPACE MONITOR
@@ -11,17 +12,34 @@ import random
 print("=" * 50)
 print("   SMART WORKSPACE MONITOR")
 print("=" * 50)
-print("Memuat model YOLOv8... (pertama kali akan download ~6MB)")
 
-# 1. Load model YOLOv8 Nano
-model = YOLO('yolov8s.pt')
+# 1. Load model - pakai hasil training jika sudah ada, jika belum pakai pretrained
+BEST_MODEL_PATH = 'runs/train/workspace_monitor/weights/best.pt'
+if os.path.exists(BEST_MODEL_PATH):
+    print(f"[OK] Menggunakan model hasil training: {BEST_MODEL_PATH}")
+    model = YOLO(BEST_MODEL_PATH)
+else:
+    print("[INFO] Model training belum ada. Jalankan train.py terlebih dahulu.")
+    print("[INFO] Menggunakan model pretrained YOLOv8s sementara...")
+    model = YOLO('yolov8s.pt')
 
 # 2. Daftar barang meja kerja yang ingin dideteksi
+# (hanya kelas yang relevan dengan meja kerja dari dataset COCO)
 DESK_CLASSES = [
-    'laptop', 'mouse', 'keyboard', 'cell phone', 'book', 'cup', 'bottle',
-    'chair', 'backpack', 'scissors', 'remote', 'tv', 'potted plant',
-    'vase', 'toothbrush', 'suitcase', 'handbag', 'tie', 'umbrella',
-    'frisbee', 'skateboard'
+    'laptop',       # laptop/notebook
+    'mouse',        # mouse komputer
+    'keyboard',     # keyboard
+    'cell phone',   # smartphone
+    'book',         # buku
+    'cup',          # gelas/mug
+    'bottle',       # botol minum
+    'scissors',     # gunting
+    'remote',       # remote control
+    'tv',           # monitor/TV
+    'potted plant', # tanaman hias
+    'vase',         # vas/tempat pensil
+    'chair',        # kursi
+    'backpack',     # tas ransel
 ]
 
 # 3. Konfigurasi
@@ -71,7 +89,7 @@ while True:
         confidence = float(box.conf)
         
         # Kalau barang masuk daftar DESK_CLASSES, baru kita proses dan gambar
-        if class_name in DESK_CLASSES and confidence > 0.15:
+        if class_name in DESK_CLASSES and confidence >= 0.30:  # threshold 30% untuk kurangi false positive
             detected_items.append(class_name)
             
             # Ambil koordinat untuk gambar kotak
